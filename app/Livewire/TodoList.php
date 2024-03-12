@@ -12,9 +12,8 @@ class TodoList extends Component
     use WithPagination;
     #[Rule('required|unique:todos')]
     public $name;
-    #[Rule('')]
     public $search;
-
+    public $editName;
     public function create()
     {
         $validated = $this->validateOnly('name');
@@ -32,9 +31,15 @@ class TodoList extends Component
     }
     public function checked($id)
     {
-        $todo=Todo::findOrFail($id);
+        $todo = Todo::findOrFail($id);
         $todo->completed = !$todo->completed;
         $todo->save();
+    }
+
+    public function edit($id)
+    {
+        $todo = Todo::findOrFail($id);
+        $this->editName=$todo->name;
     }
     public function render()
     {
